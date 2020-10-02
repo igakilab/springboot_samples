@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample2-6</title>
+</head>
+
+<body>
+  <h1>Hello ArrayList and JavaScript!</h1>
+  複数の値を処理してみよう
+  <p>
+    数字を2つ入れてみよう
+  <form action="/sample26" method="post">
+    <input type="number" name="min" />
+    <input type="number" name="max" />
+    <input type="submit" value="計算"><input type="reset" value="リセット">
+  </form>
+  </p>
+
+  <div>
+    以下の数字をすべて加算すると(Thymeleafのfor-each)<br>
+    <span th:each="num:${sumRange}">
+      [[${num}]]
+    </span>
+    <div>
+      [[${sum}]]
+    </div>
+  </div>
+
+  <a href="/sample26">次のサンプルへ</a>
+</body>
+
+</html>
