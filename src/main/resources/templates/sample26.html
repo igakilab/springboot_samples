@@ -7,6 +7,18 @@
 </head>
 
 <body>
+  <script th:inline="javascript" th:if=${score}>
+    window.onload = function () {
+      var score = [[${ score }]];
+      var num_list_txt = "";
+      for (let i = 0; i < 3; i++) {
+        num_list_txt = num_list_txt + score.numList[i] + ",";
+      }
+      num_list_txt = num_list_txt + "<br>平均は" + score.ave;
+      document.getElementById("num_list").innerHTML = num_list_txt;
+      console.log(score);
+    }
+  </script>
   <h1>Hello ArrayList and JavaScript!</h1>
   複数の値を処理してみよう
   <p>
@@ -28,7 +40,22 @@
     </div>
   </div>
 
-  <a href="/sample26">次のサンプルへ</a>
+  <p>
+    数字を3つ入れてみよう
+  <form action="/sample26/ave" method="post">
+    <input type="number" name="num1" />
+    <input type="number" name="num2" />
+    <input type="number" name="num3" />
+    <input type="submit" value="計算"><input type="reset" value="リセット">
+  </form>
+  </p>
+
+  <div th:if="${score}">
+    <span id="num_list">
+
+    </span>
+  </div>
+
 </body>
 
 </html>
