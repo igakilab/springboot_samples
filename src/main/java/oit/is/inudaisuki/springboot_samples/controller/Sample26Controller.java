@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import oit.is.inudaisuki.springboot_samples.model.Score;
 
 /**
- * このクラスのすべてのメソッドは/sample26で呼び出される
+ * @RequestMapping("/sample26")をクラスの前につけると，このクラスのすべてのメソッドは/sample26で呼び出されることを表す
  *
  */
 @Controller
@@ -20,7 +20,7 @@ import oit.is.inudaisuki.springboot_samples.model.Score;
 public class Sample26Controller {
 
   /**
-   * sample26というGETリクエストがあったら，sample26()を呼び出して，sample26.htmlを返すメソッド
+   * @GetMappingに引数が与えられていないので，クラスで指定されたとおり/sample26へのGETリクエストがあったら，sample26()を呼び出して，sample26.htmlを返す
    *
    * @return
    */
@@ -31,6 +31,7 @@ public class Sample26Controller {
 
   /**
    * メソッド名は異なるが，/sample26というPOSTリクエストがあったら，こちらが呼び出されて，sample26.htmlが返る
+   * ArrayListオブジェクトをModelMapの変数に直接与えて，thymeleafにわたすことができる
    *
    * @return
    */

@@ -7,6 +7,12 @@
 </head>
 
 <body>
+  <!--
+    th:inline="javascript" と書くことで，javascriptコード中に[[${}]]を利用して変数をJavaから受け取ることができるようになる
+    表示の際にはdocument.getElementByIdのようなDOM操作のAPIを利用し，値を表示する
+    今回の場合 #num_list というIDを利用して操作している
+    javascriptのDOM操作については適宜検索してみること
+  -->
   <script th:inline="javascript" th:if=${score}>
     window.onload = function () {
       var score = [[${ score }]];
@@ -32,6 +38,8 @@
 
   <div>
     以下の数字をすべて加算すると(Thymeleafのfor-each)<br>
+    <!-- sumRangeに配列として数値が入っている
+    for each文としてすべての数値を表示する-->
     <span th:each="num:${sumRange}">
       [[${num}]]
     </span>
@@ -42,6 +50,7 @@
 
   <p>
     数字を3つ入れてみよう
+    <!-- /sample26/ave にpostでアクセスするフォーム-->
   <form action="/sample26/ave" method="post">
     <input type="number" name="num1" />
     <input type="number" name="num2" />

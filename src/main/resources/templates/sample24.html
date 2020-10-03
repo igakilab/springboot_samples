@@ -10,13 +10,18 @@
   <h1>Hello POST!</h1>
   簡単な電卓Webアプリを動かしてみよう！
   <p>
+    <!--form actionが処理を渡す先を示す
+    input nameがパラメータ名を表している
+  この場合，kakeru1,kakeru2の2つの変数が/sample25にpost メソッドで渡される-->
   <form action="/sample25" method="post">
     <input type="number" name="kakeru1" />×
     <input type="number" name="kakeru2" />
     <input type="submit" value="計算"><input type="reset" value="リセット">
   </form>
   </p>
-  <!--kakeruResultが返ってきたときだけdivを表示する-->
+  <!--th:ifと書くと条件文を表す．この例の場合，kakeruResultが
+    返ってきたとき(nullでないとき)だけdivを表示する
+  th:ifのようなthymeleafの変数であることを示している場合は[[]]で囲まなくて良い-->
   <div th:if="${kakeruResult}">
     結果：[[${kakeruResult}]]
   </div>

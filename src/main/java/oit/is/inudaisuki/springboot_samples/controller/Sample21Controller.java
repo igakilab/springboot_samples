@@ -26,7 +26,10 @@ public class Sample21Controller {
   }
 
   /**
-   * パスパラメータ2つをGETで受け付ける
+   * パスパラメータ2つをGETで受け付ける 1つ目の変数をparam1という名前で，2つ目の変数をparam2という名前で受け取る
+   * GETで受け取った2つの変数とsample22の引数の名前が同じなため， 引数の前に @PathVariable と付けるだけで，パスパラメータの値を
+   * javaで処理できるようになる ModelMapはthymeleafに渡すためのMapと呼ばれるデータ構造を持つ変数
+   * Mapはkeyとvalueの組み合わせで値を保持する
    *
    * @param param1
    * @param param2
@@ -35,9 +38,11 @@ public class Sample21Controller {
    */
   @GetMapping("/sample22/{param1}/{param2}")
   public String sample22(@PathVariable String param1, @PathVariable String param2, ModelMap model) {
-    int tasu = Integer.parseInt(param1);
+    int tasu = Integer.parseInt(param1);// param1が文字列なので，parseIntでint型の数値に変換する
     int tasareru = Integer.parseInt(param2);
     int tasuResult = tasu + tasareru;
+    // ModelMap型変数のmodelにtasuResult1という名前の変数で，tasuResultの値を登録する．
+    // ここで値を登録するとthymeleafが受け取り，htmlで処理することができるようになる
     model.addAttribute("tasuResult1", tasuResult);
     return "sample21.html";
 
@@ -56,10 +61,21 @@ public class Sample21Controller {
   public String sample23(@RequestParam Integer tasu1, @RequestParam Integer tasu2, ModelMap model) {
     int tasuResult = tasu1 + tasu2;
     model.addAttribute("tasuResult2", tasuResult);
+    // ModelMap型変数のmodelにtasuResult2という名前の変数で，tasuResultの値を登録する．
+    // ここで値を登録するとthymeleafが受け取り，htmlで処理することができるようになる
     return "sample21.html";
 
   }
 
+  /**
+   * POSTを受け付ける場合は@PostMappingを利用する /sample25へのpostを受け付けて，FormParamで指定された変数(input
+   * name)をsample25()メソッドの引数として受け取ることができる
+   * 
+   * @param kakeru1
+   * @param kakeru2
+   * @param model
+   * @return
+   */
   @PostMapping("/sample25")
   public String sample25(@RequestParam Integer kakeru1, @RequestParam Integer kakeru2, ModelMap model) {
     int kakeruResult = kakeru1 * kakeru2;
