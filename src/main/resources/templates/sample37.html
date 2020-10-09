@@ -14,13 +14,13 @@
   <!--roomがあった場合に表示される-->
   <!--objectはdivの中でroomオブジェクトのフィールドにアクセスすることを示す-->
   <div th:if="${room}" th:object="${room}">
-    <ur>
+    <ul>
       <!--objectが上位タグで指定されているときは*でそのオブジェクト内のフィールドにアクセスできる-->
       <li>RoomNo:[[*{roomNo}]]</li>
       <!--eachは所謂for each．この場合room内のusersフィールドにあるすべてのデータを一通り表示する
       thが指定されているので[]が不要になる-->
       <li th:each="user : *{users}">[[${user}]]</li>
-    </ur>
+    </ul>
   </div>
 
 
