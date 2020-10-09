@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample2-1</title>
+</head>
+
+<body>
+  <h1>Authorized! [[${login_user}]]</h1>
+  <a href="/logout">ログアウト</a>
+
+  <p>
+    <a href="/sample3/step2">ログインユーザ名取得(Sample3-2)</a>
+  </p>
+  <span sec:authorize="hasRole('ROLE_ADMIN')">管理者</span>
+  <span sec:authorize="hasRole('ROLE_USER')">ユーザ</span>
+</body>
+
+</html>
