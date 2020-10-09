@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>SpringBoot Sample2-1</title>
+  <title>SpringBoot Sample3-1</title>
 </head>
 
 <body>
@@ -11,10 +11,14 @@
   <a href="/logout">ログアウト</a>
 
   <p>
-    <a href="/sample3/step2">ログインユーザ名取得(Sample3-2)</a>
+    <a href="/sample3/step2">ログインユーザ名をGETで取得(Sample3-2)</a>
   </p>
-  <span sec:authorize="hasRole('ROLE_ADMIN')">管理者</span>
-  <span sec:authorize="hasRole('ROLE_USER')">ユーザ</span>
+
+  <p>
+    <a href="/sample3/step3">Sample3-3へGETで移動</a>
+  </p>
+
+
 </body>
 
 </html>

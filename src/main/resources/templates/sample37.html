@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample3-7</title>
+</head>
+
+<body>
+  <div><a href="/logout">ログアウト</a></div>
+
+  <h2>マルチユーザなWebアプリケーション</h2>
+  <a href="/sample3/step8">入室</a>
+  <!--roomがあった場合に表示される-->
+  <!--objectはdivの中でroomオブジェクトのフィールドにアクセスすることを示す-->
+  <div th:if="${room}" th:object="${room}">
+    <ur>
+      <!--objectが上位タグで指定されているときは*でそのオブジェクト内のフィールドにアクセスできる-->
+      <li>RoomNo:[[*{roomNo}]]</li>
+      <!--eachは所謂for each．この場合room内のusersフィールドにあるすべてのデータを一通り表示する
+      thが指定されているので[]が不要になる-->
+      <li th:each="user : *{users}">[[${user}]]</li>
+    </ur>
+  </div>
+
+
+
+</body>
+
+</html>
