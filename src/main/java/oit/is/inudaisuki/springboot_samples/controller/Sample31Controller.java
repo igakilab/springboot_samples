@@ -66,4 +66,14 @@ public class Sample31Controller {
     return "sample37.html";
   }
 
+  @GetMapping("step9")
+  public String sample39(Principal prin, ModelMap model) {
+    String loginUser = prin.getName();
+    Room newRoom = new Room();
+    newRoom.addUser(loginUser);
+    model.addAttribute("new_room", newRoom);
+
+    return "sample37.html";
+  }
+
 }

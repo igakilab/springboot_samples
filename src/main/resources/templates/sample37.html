@@ -10,15 +10,28 @@
   <div><a href="/logout">ログアウト</a></div>
 
   <h2>マルチユーザなWebアプリケーション</h2>
-  <a href="/sample3/step8">入室</a>
+  <a href="/sample3/step8">入室(DI)</a>
+  <a href="/sample3/step9">入室(new)</a>
   <!--roomがあった場合に表示される-->
   <!--objectはdivの中でroomオブジェクトのフィールドにアクセスすることを示す-->
   <div th:if="${room}" th:object="${room}">
+    DI利用
     <ul>
       <!--objectが上位タグで指定されているときは*でそのオブジェクト内のフィールドにアクセスできる-->
       <li>RoomNo:[[*{roomNo}]]</li>
       <!--eachは所謂for each．この場合room内のusersフィールドにあるすべてのデータを一通り表示する
       thが指定されているので[]が不要になる-->
+      <li th:each="user : *{users}">[[${user}]]</li>
+    </ul>
+  </div>
+
+  <div th:if="${new_room}" th:object="${new_room}">
+    DIを利用せずnew利用
+    <ul>
+      <!--objectが上位タグで指定されているときは*でそのオブジェクト内のフィールドにアクセスできる-->
+      <li>RoomNo:[[*{roomNo}]]</li>
+      <!--eachは所謂for each．この場合room内のusersフィールドにあるすべてのデータを一通り表示する
+          thが指定されているので[]が不要になる-->
       <li th:each="user : *{users}">[[${user}]]</li>
     </ul>
   </div>

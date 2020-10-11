@@ -20,6 +20,8 @@ public class Room {
     this.users.add(name);
   }
 
+  // 以降はフィールドのgetter/setter
+  // これらがないとThymeleafで値を取得できない
   public int getRoomNo() {
     return roomNo;
   }
