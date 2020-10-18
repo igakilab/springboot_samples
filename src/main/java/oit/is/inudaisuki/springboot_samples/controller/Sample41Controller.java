@@ -3,7 +3,6 @@ package oit.is.inudaisuki.springboot_samples.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,7 +82,6 @@ public class Sample41Controller {
   }
 
   @PostMapping("step5")
-  @Transactional
   public String sample45(@RequestParam Integer number, ModelMap model) {
     ArrayList<Chamber> chambers5 = chamberMapper.selectAllByNumber(number);
     model.addAttribute("chambers5", chambers5);
