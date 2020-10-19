@@ -14,7 +14,7 @@ public interface ChamberMapper {
   Chamber selectById(int id);
 
   @Select("SELECT * from chamber where number = #{number}")
-  ArrayList<Chamber> selectAllByNumber(int id);
+  ArrayList<Chamber> selectAllByNumber(int number);
 
   /**
    * DBのカラム名とjavaクラスのフィールド名が同じ場合はそのまま代入してくれる（大文字小文字の違いは無視される）
