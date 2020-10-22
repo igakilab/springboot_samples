@@ -1,6 +1,5 @@
 package oit.is.inudaisuki.springboot_samples.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import oit.is.inudaisuki.springboot_samples.model.Chamber;
-import oit.is.inudaisuki.springboot_samples.model.ChamberMapper;
-import oit.is.inudaisuki.springboot_samples.model.ChamberUser;
 import oit.is.inudaisuki.springboot_samples.model.Fruit;
 import oit.is.inudaisuki.springboot_samples.model.FruitMapper;
-import oit.is.inudaisuki.springboot_samples.model.UserInfo;
+import oit.is.inudaisuki.springboot_samples.service.AsyncShopService5;
 
 /**
- * /sample3へのリクエストを扱うクラス authenticateの設定をしていれば， /sample3へのアクセスはすべて認証が必要になる
+ * /sample5へのリクエストを扱うクラス authenticateの設定をしていれば， /sample5へのアクセスはすべて認証が必要になる
  */
 @Controller
 @RequestMapping("/sample5")
@@ -29,6 +25,18 @@ public class Sample51Controller {
 
   @Autowired
   FruitMapper fMapper;
+
+  @Autowired
+  AsyncShopService5 asyncShop5;
+
+  @GetMapping("async")
+  public SseEmitter asyncShop() {
+    System.out.println("async:::::::::::");
+    SseEmitter emitter = new SseEmitter();
+    asyncShop5.asyncShowFruitsList(emitter);
+    return emitter;
+
+  }
 
   @GetMapping("step1")
   public String sample51() {
@@ -95,4 +103,26 @@ public class Sample51Controller {
     return "sample51.html";
   }
 
+  @GetMapping("step6")
+  public String sample56(ModelMap model) {
+    ArrayList<Fruit> fruits6 = fMapper.selectAllFruit();
+    model.addAttribute("fruits6", fruits6);
+    return "sample56.html";
+  }
+
+  @GetMapping("step7")
+  @Transactional
+  public String sample57(@RequestParam Integer id, ModelMap model) {
+    // 削除対象のフルーツを取得
+    Fruit fruit7 = fMapper.selectById(id);
+    model.addAttribute("fruit7", fruit7);
+
+    // 削除
+    fMapper.deleteById(id);
+
+    // 削除後のフルーツリストを取得
+    ArrayList<Fruit> fruits6 = fMapper.selectAllFruit();
+    model.addAttribute("fruits6", fruits6);
+    return "sample56.html";
+  }
 }
