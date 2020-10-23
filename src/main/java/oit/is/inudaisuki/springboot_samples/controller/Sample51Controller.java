@@ -89,26 +89,4 @@ public class Sample51Controller {
     return "sample51.html";
   }
 
-  @GetMapping("step6")
-  public String sample56(ModelMap model) {
-    ArrayList<Fruit> fruits6 = fMapper.selectAllFruit();
-    model.addAttribute("fruits6", fruits6);
-    return "sample56.html";
-  }
-
-  @GetMapping("step7")
-  @Transactional
-  public String sample57(@RequestParam Integer id, ModelMap model) {
-    // 削除対象のフルーツを取得
-    Fruit fruit7 = fMapper.selectById(id);
-    model.addAttribute("fruit7", fruit7);
-
-    // 削除
-    fMapper.deleteById(id);
-
-    // 削除後のフルーツリストを取得
-    ArrayList<Fruit> fruits6 = fMapper.selectAllFruit();
-    model.addAttribute("fruits6", fruits6);
-    return "sample56.html";
-  }
 }
