@@ -3,13 +3,14 @@
 
 <head>
   <meta charset="utf-8">
-  <title>SpringBoot Sample5-6</title>
+  <title>SpringBoot Sample5-8</title>
   <script>
-    var sse = new EventSource('/sample50/asyncCount1');
+    var sse = new EventSource('/sample58/step1');
     sse.onmessage = function (event) {
       console.log(event.data);
       document.getElementById("p1").textContent = event.data;
     }
+
   </script>
 </head>
 

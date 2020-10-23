@@ -19,10 +19,8 @@ public class AsyncShopService5 {
         emitter.send("/sample5/step6");
       }
     } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
       emitter.complete();
     }

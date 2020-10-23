@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.inudaisuki.springboot_samples.model.Fruit;
 import oit.is.inudaisuki.springboot_samples.model.FruitMapper;
-import oit.is.inudaisuki.springboot_samples.service.AsyncShopService5;
 
 /**
  * /sample5へのリクエストを扱うクラス authenticateの設定をしていれば， /sample5へのアクセスはすべて認証が必要になる
@@ -25,18 +23,6 @@ public class Sample51Controller {
 
   @Autowired
   FruitMapper fMapper;
-
-  @Autowired
-  AsyncShopService5 asyncShop5;
-
-  @GetMapping("async")
-  public SseEmitter asyncShop() {
-    System.out.println("async:::::::::::");
-    SseEmitter emitter = new SseEmitter();
-    asyncShop5.asyncShowFruitsList(emitter);
-    return emitter;
-
-  }
 
   @GetMapping("step1")
   public String sample51() {
