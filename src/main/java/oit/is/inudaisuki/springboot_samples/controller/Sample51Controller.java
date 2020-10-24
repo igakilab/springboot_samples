@@ -81,6 +81,7 @@ public class Sample51Controller {
     System.out.println(name);
     System.out.println(price);
     Fruit fruit = new Fruit(id, name, price);
+    // update
     fMapper.updateById(fruit);
     // フルーツリストを取得
     ArrayList<Fruit> fruits2 = fMapper.selectAllFruit();

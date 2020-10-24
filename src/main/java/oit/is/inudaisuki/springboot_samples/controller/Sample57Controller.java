@@ -49,10 +49,6 @@ public class Sample57Controller {
   @GetMapping("step8")
   public SseEmitter sample58() {
     final SseEmitter sseEmitter = new SseEmitter();
-
-    sseEmitter.onTimeout(() -> {
-      sseEmitter.complete();
-    });
     this.shop57.asyncShowFruitsList(sseEmitter);
     return sseEmitter;
   }

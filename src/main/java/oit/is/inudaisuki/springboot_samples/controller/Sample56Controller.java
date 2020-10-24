@@ -38,12 +38,6 @@ public class Sample56Controller {
     // push処理の秘密兵器．これを利用してブラウザにpushする
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter sseEmitter = new SseEmitter();
-
-    // ->はいわゆるラムダ式
-    // あまり難しく考えず，onTimeoutが呼ばれるときに{}の中が処理されるとおぼえておいてください
-    sseEmitter.onTimeout(() -> {
-      sseEmitter.complete();
-    });
     this.ac56.count(sseEmitter);
     return sseEmitter;
   }
@@ -51,9 +45,6 @@ public class Sample56Controller {
   @GetMapping("step2")
   public SseEmitter pushFruit() {
     final SseEmitter sseEmitter = new SseEmitter();
-    sseEmitter.onTimeout(() -> {
-      sseEmitter.complete();
-    });
     this.ac56.pushFruit(sseEmitter);
     return sseEmitter;
 

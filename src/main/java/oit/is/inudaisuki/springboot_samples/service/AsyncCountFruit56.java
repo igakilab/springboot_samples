@@ -28,10 +28,11 @@ public class AsyncCountFruit56 {
         // 例外の名前とメッセージだけ表示する
         logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
         // 例外が発生したらカウントとsendを終了する
+        emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
         break;
       }
     }
-    emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
+
   }
 
   @Async
