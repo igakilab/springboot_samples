@@ -7,8 +7,6 @@
 - 必要な開発環境は下記(private)を参照して構築すること
 - https://github.com/igakilab/isdev/
 
-# 課題
-### git-bashでjavaのエラーメッセージが文字化ける
 
 ## セットアップ（0からやる場合）
 ### Spring Initializrを利用したセットアップ
@@ -79,4 +77,3 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 - http://localhost:8000/ にアクセスしたときになにかWebページが表示されていればOK．
 - 終了時は `gradle bootRun`を実行しているターミナルで，Ctr+Cを実行すれば良い
   - vscode内のターミナルではなく，別のターミナルで実行したときに，Ctr+Cが効かない場合がある．その場合は別のターミナルを開き，build.gradleがあるフォルダで`gradle --stop` と実行すると良い．
-
