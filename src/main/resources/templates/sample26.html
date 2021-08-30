@@ -8,6 +8,27 @@
 
 <body>
   <h1>Hello ArrayList and JavaScript!</h1>
+  複数の値を処理してみよう
+  <p>
+    数字を2つ入れてみよう
+  <form action="/sample26" method="post">
+    最小値：<input type="number" name="min" />
+    最大値：<input type="number" name="max" />
+    <input type="submit" value="計算"><input type="reset" value="リセット">
+  </form>
+  </p>
+
+  <div>
+    以下の数字をすべて加算すると(Thymeleafのfor-each)<br>
+    <!-- sumRangeに配列として数値が入っている
+        for each文としてすべての数値を表示する-->
+    <span th:each="num:${sumRange}">
+      [[${num}]]
+    </span>
+    <div>
+      [[${sum}]]
+    </div>
+  </div>
 </body>
 
 </html>
