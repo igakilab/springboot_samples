@@ -20,6 +20,11 @@ public class Sample21Controller {
     return "sample21.html";
   }
 
+  @GetMapping("/sample24")
+  public String sample23() {
+    return "sample24.html";
+  }
+
   /**
    * パスパラメータ2つをGETで受け付ける 1つ目の変数をparam1という名前で，2つ目の変数をparam2という名前で受け取る
    * GETで受け取った2つの変数とsample22()の引数の名前が同じなため， 引数の前に @PathVariable と付けるだけで，パスパラメータの値を
