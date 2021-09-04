@@ -1,4 +1,4 @@
-package oit.is.inudaisuki.model;
+package oit.is.inudaisuki.springboot_samples.model;
 
 import java.util.ArrayList;
 
