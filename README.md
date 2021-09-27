@@ -43,6 +43,7 @@ configurations {
   implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 }
 ```
+  - security系のimplementation(3つ)をすべてコメントアウト（最初は認証系使わないので）
 
 
 ### application.properties
@@ -60,7 +61,8 @@ server.port=8000
 ### index.htmlの配置
 - `src/main/resource/static/index.html` を置く．index.htmlの中身はなんでもOK
 
-### SpringbootSamplesApplication.javaの修正
+### ~~SpringbootSamplesApplication.javaの修正~~
+- 以下はbuild.gradleの修正ミスだったっぽい
 - `@SpringBootApplication`を以下のように修正し，SecurityAutoConfigurationをimportする
   - Security機能を無効にする設定．build.gradleでsecurityをコメントアウトするとbootrun時にClassNotFoundと出てエラーになる
 
