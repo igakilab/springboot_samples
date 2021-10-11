@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,33 +42,30 @@ public class Sample57Controller {
     return "sample57.html";
   }
 
-  /**
-   * JavaScriptからEventSourceとして呼び出されるGETリクエスト SseEmitterを返すことで，PUSH型の通信を実現する
-   *
-   * @return
-   */
   @GetMapping("step8")
-  public SseEmitter sample58() {
-    final SseEmitter sseEmitter = new SseEmitter();
-    this.shop57.asyncShowFruitsList(sseEmitter);
-    return sseEmitter;
-  }
+  @Transactional
+  public String sample58(@RequestParam Integer id, ModelMap model) {
+    // 選択したフルーツを削除し，削除対象のフルーツをmodelに登録
+    final Fruit fruit8 = this.shop57.syncBuyFruits(id);
+    model.addAttribute("fruit8", fruit8);
 
-  /**
-   * 購入処理． 購入リンクをクリックするとDBから削除し，表示を更新する 同時にブラウザで同じページを表示しているユーザのページの表示もPUSHで更新する
-   *
-   * @param id
-   * @param model
-   * @return
-   */
-  @GetMapping("step9")
-  public String sample59(@RequestParam Integer id, ModelMap model) {
-    final Fruit fruit9 = this.shop57.syncBuyFruits(id);
-    model.addAttribute("fruit9", fruit9);
-
+    // 残りのフルーツリストを取得してmodelに登録
     final ArrayList<Fruit> fruits7 = shop57.syncShowFruitsList();
     model.addAttribute("fruits7", fruits7);
 
     return "sample57.html";
   }
+
+  /**
+   * JavaScriptからEventSourceとして呼び出されるGETリクエスト SseEmitterを返すことで，PUSH型の通信を実現する
+   *
+   * @return
+   */
+  @GetMapping("step9")
+  public SseEmitter sample59() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.shop57.asyncShowFruitsList(sseEmitter);
+    return sseEmitter;
+  }
+
 }

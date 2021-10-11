@@ -41,6 +41,7 @@ public class AsyncShopService57 {
     // 削除
     fMapper.deleteById(id);
 
+    // 非同期でDB更新したことを共有する際に利用する
     this.dbUpdated = true;
 
     return fruit;
@@ -55,11 +56,13 @@ public class AsyncShopService57 {
   public void asyncShowFruitsList(SseEmitter emitter) {
     dbUpdated = true;
     try {
-      while (true) {
+      while (true) {// 無限ループ
+        // DBが更新されていなければ0.5s休み
         if (false == dbUpdated) {
           TimeUnit.MILLISECONDS.sleep(500);
           continue;
         }
+        // DBが更新されていれば更新後のフルーツリストを取得してsendし，1s休み，dbUpdatedをfalseにする
         ArrayList<Fruit> fruits7 = this.syncShowFruitsList();
         emitter.send(fruits7);
         TimeUnit.MILLISECONDS.sleep(1000);

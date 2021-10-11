@@ -6,7 +6,7 @@
   <title>SpringBoot Sample5-7</title>
   <script>
     window.onload = function () {
-      var sse = new EventSource('/sample5/step8');
+      var sse = new EventSource('/sample5/step9');
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
         console.log(event.data);
@@ -20,12 +20,12 @@
           var idx = "<td>" + i + "</td>";
           var f_name = "<td>" + fruits_list[i].name + "</td>";
           var f_price = "<td>" + fruits_list[i].price + "</td>";
-          var f_proc = "<td>" + "<a href='/sample5/step9?id=" + fruits_list[i].id + "'>購入</a>" + "</td>"
+          var f_proc = "<td>" + "<a href='/sample5/step8?id=" + fruits_list[i].id + "'>購入</a>" + "</td>"
           fruits_table = fruits_table + bgn_tr + idx + f_name + f_price + f_proc + end_tr;
 
         }
         console.log(fruits_table);
-        tbody.innerHTML = fruits_table;
+        tbody.innerHTML = fruits_table;//idがfruits_listのtbodyのHTMLを差し替える
 
       }
     }
@@ -54,14 +54,14 @@
             <td>[[${stat.index}]]</td>
             <td>[[${fruit.name}]]</td>
             <td>[[${fruit.price}]]</td>
-            <td><a th:href="@{/sample5/step9(id=${fruit.id})}">購入</a></td>
+            <td><a th:href="@{/sample5/step8(id=${fruit.id})}">購入</a></td>
           </tr>
         </span>
       </tbody>
     </table>
   </div>
-  <div th:if="${fruit9}">
-    [[${fruit9.name}]]を[[${fruit9.price}]]円で購入しました
+  <div th:if="${fruit8}">
+    [[${fruit8.name}]]を[[${fruit8.price}]]円で購入しました
   </div>
 
 </body>
