@@ -10,7 +10,6 @@
       sse.onmessage = function (event) {
         console.log("sse.onmessage")
         console.log(event.data);
-        var tbody = document.getElementById("fruits_list");
         var fruits_list = JSON.parse(event.data);//JSONオブジェクトとしてparse
         var fruits_table = "";
         // DBに残っているフルーツのリストがJSONオブジェクトとして得られるので，htmlを作成し，tbodyの中身毎入れ替える
@@ -25,6 +24,7 @@
 
         }
         console.log(fruits_table);
+        var tbody = document.getElementById("fruits_list");
         tbody.innerHTML = fruits_table;//idがfruits_listのtbodyのHTMLを差し替える
 
       }
