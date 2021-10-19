@@ -24,7 +24,7 @@ public class Sample21Controller {
   }
 
   @GetMapping("/sample24")
-  public String sample23() {
+  public String sample24() {
     return "sample24.html";
   }
 
