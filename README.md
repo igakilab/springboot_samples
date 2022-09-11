@@ -1,6 +1,6 @@
 # Springbootsamples
 - Springbootを利用したWebアプリケーションの各種サンプル実装を行うサイト．
-- 対象のSpringbootのver.はv2.5.4
+- 対象のSpringbootのver.はv2.7.1
 
 
 ## 環境構築
@@ -14,7 +14,7 @@
 - 表示->コマンドパレット，を選択し，Spring Initializr:Generate a Gradle Project を実行する
 - Spring Initializr: Create a Gradle Project...
 - Spring Boot version.
-  - 2.5.4
+  - 2.7.1
   - ただし，この数値はすぐ変わるので，そのときそのときの最新の安定版(M3やSNAPSHOTと書いていないもの)を選択すること
 - Specify project language: Java
 - Input Group Id for your project: oit.is.inudaisuki
@@ -43,7 +43,7 @@ configurations {
   implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 }
 ```
-
+  - security関連のプラグインをimplementationからコメントアウト
 
 ### application.properties
 - `springboot_samples\src\main\resources\application.properties` に以下のような設定を追記
@@ -58,7 +58,17 @@ server.port=8000
 - ポート番号 `server.port=8000` を設定することで， http://localhost:8000/ でSpringBootアプリが動作するようになる
 
 ### index.htmlの配置
-- `src/main/resource/static/index.html` を置く．index.htmlの中身はなんでもOK
+- `src/main/resource/static/index.html` を置く．index.htmlの中身はなんでもOK(predev用はhoge)
+
+### SpringBootWebアプリの実行方法
+- vscodeからターミナル->新しいターミナル，を選択し，bashのターミナルをエディタ下部に開く
+- build.gradleファイルがあるのと同じディレクトリにいることを確認後，`gradle bootRun`を実行するとSpringBootアプリがビルドされ，組み込みjettyで起動する
+  - `gradle build`を実行するとbuild/libs/ 以下に作成されるjarを対象に，java -jar ???.jar でもSpringBootWebアプリケーションを起動できる
+- http://localhost:8000/ にアクセスしたときになにかWebページが表示されていればOK．
+- 終了時は `gradle bootRun`を実行しているターミナルで，Ctr+Cを実行すれば良い
+  - vscode内のターミナルではなく，別のターミナルで実行したときに，Ctr+Cが効かない場合がある．その場合は別のターミナルを開き，build.gradleがあるフォルダで`gradle --stop` と実行すると良い．
+
+## predevはここまで
 
 ### SpringbootSamplesApplication.javaの修正
 - `@SpringBootApplication`を以下のように修正し，SecurityAutoConfigurationをimportする
@@ -69,11 +79,3 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 ```
-
-### SpringBootWebアプリの実行方法
-- vscodeからターミナル->新しいターミナル，を選択し，bashのターミナルをエディタ下部に開く
-- build.gradleファイルがあるのと同じディレクトリにいることを確認後，`gradle bootRun`を実行するとSpringBootアプリがビルドされ，組み込みjettyで起動する
-  - `gradle build`を実行するとbuild/libs/ 以下に作成されるjarを対象に，java -jar ???.jar でもSpringBootWebアプリケーションを起動できる
-- http://localhost:8000/ にアクセスしたときになにかWebページが表示されていればOK．
-- 終了時は `gradle bootRun`を実行しているターミナルで，Ctr+Cを実行すれば良い
-  - vscode内のターミナルではなく，別のターミナルで実行したときに，Ctr+Cが効かない場合がある．その場合は別のターミナルを開き，build.gradleがあるフォルダで`gradle --stop` と実行すると良い．
