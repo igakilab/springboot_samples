@@ -15,28 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class Sample3AuthConfiguration {
 
   /**
-   * 認可処理に関する設定（認証されたユーザがどこにアクセスできるか）
-   *
-   * @param http
-   * @return
-   * @throws Exception
-   */
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    // Spring Securityのフォームを利用してログインを行う（自前でログインフォームを用意することも可能）
-    http.formLogin();
-
-    // "/" に該当するところは誰でもアクセスできる（permitAll）
-    // この前で指定された"/"を除くあらゆるリクエストについて認証が必要であること(authenticated)を示す
-    http.authorizeHttpRequests()
-        .mvcMatchers("/").permitAll()
-        .anyRequest().authenticated();
-
-    http.logout().logoutSuccessUrl("/"); // ログアウト時は "/" に戻る
-    return http.build();
-  }
-
-  /**
    * 認証処理に関する設定（誰がどのようなロールでログインできるか）
    *
    * @return
@@ -67,6 +45,28 @@ public class Sample3AuthConfiguration {
         .build();
     // 生成したユーザをImMemoryUserDetailsManagerに渡す（いくつでも良い）
     return new InMemoryUserDetailsManager(user1, user2, admin);
+  }
+
+  /**
+   * 認可処理に関する設定（認証されたユーザがどこにアクセスできるか）
+   *
+   * @param http
+   * @return
+   * @throws Exception
+   */
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // Spring Securityのフォームを利用してログインを行う（自前でログインフォームを用意することも可能）
+    http.formLogin();
+
+    // http://localhost:8000/sample3 で始まるURLへのアクセスはログインが必要
+    // mvcMatchers().authenticated()がmvcMatchersに指定されたアクセス先に認証処理が必要であることを示す
+    // authenticated()の代わりにpermitAll()と書くと認証不要となる
+    http.authorizeHttpRequests()
+        .mvcMatchers("/sample3/**").authenticated();
+
+    http.logout().logoutSuccessUrl("/"); // ログアウト時は "http://localhost:8000/" に戻る
+    return http.build();
   }
 
   /**
