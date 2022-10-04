@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface ChamberMapper {
 
-  @Select("SELECT id,user,number from chamber where id = #{id}")
+  @Select("SELECT id,userName,number from chamber where id = #{id}")
   Chamber selectById(int id);
 
   @Select("SELECT * from chamber where number = #{number}")
@@ -22,22 +22,23 @@ public interface ChamberMapper {
    *
    * @return
    */
-  @Select("select CHAMBER.USER,CHAMBER.NUMBER,USERINFO.HEIGHT from CHAMBER JOIN USERINFO ON CHAMBER.USER=USERINFO.USER;")
+  @Select("select CHAMBER.USERNAME,CHAMBER.NUMBER,USERINFO.HEIGHT from CHAMBER JOIN USERINFO ON CHAMBER.USERNAME=USERINFO.USERNAME;")
   ArrayList<ChamberUser> selectAllChamberUser();
 
   /**
-   * #{user}などはinsertの引数にあるChamberクラスのフィールドを表しています 引数に直接String userなどと書いてもいけるはず
+   * #{userName}などはinsertの引数にあるChamberクラスのフィールドを表しています 引数に直接String
+   * userNameなどと書いてもいけるはず
    * 下記のOptionsを指定すると，insert実行時にAuto incrementされたIDの情報を取得できるようになる useGeneratedKeys
    * = true -> Keyは自動生成されることを表す keyColumn : keyになるテーブルのカラム名 keyProperty :
    * keyになるJavaクラスのフィールド名
    *
    * @param chamber
    */
-  @Insert("INSERT INTO chamber (user,number) VALUES (#{user},#{number});")
+  @Insert("INSERT INTO chamber (userName,number) VALUES (#{userName},#{number});")
   @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
   void insertChamber(Chamber chamber);
 
-  @Insert("INSERT INTO userinfo (user,height) VALUES (#{user},#{height});")
+  @Insert("INSERT INTO userinfo (userName,height) VALUES (#{userName},#{height});")
   void insertUserInfo(UserInfo userinfo);
 
 }

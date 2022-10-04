@@ -1,7 +1,7 @@
 package oit.is.inudaisuki.springboot_samples.model;
 
 public class ChamberUser {
-  String user;
+  String userName;
   int number;
   double height;
 
@@ -21,12 +21,12 @@ public class ChamberUser {
     this.number = number;
   }
 
-  public String getUser() {
-    return user;
+  public String getUserName() {
+    return userName;
   }
 
-  public void setUser(String user) {
-    this.user = user;
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
 }

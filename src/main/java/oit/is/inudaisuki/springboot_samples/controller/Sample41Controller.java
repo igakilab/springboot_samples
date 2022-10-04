@@ -74,7 +74,7 @@ public class Sample41Controller {
     String loginUser = prin.getName(); // ログインユーザ情報
     Chamber chamber3 = new Chamber();
     chamber3.setNumber(number);
-    chamber3.setUser(loginUser);
+    chamber3.setUserName(loginUser);
     chamberMapper.insertChamber(chamber3);
     model.addAttribute("chamber3", chamber3);
     // System.out.println("ID:" + chamber3.getId());
@@ -101,7 +101,7 @@ public class Sample41Controller {
   public String sample48(@RequestParam Double height, ModelMap model, Principal prin) {
     String loginUser = prin.getName(); // ログインユーザ情報
     UserInfo ui = new UserInfo();
-    ui.setUser(loginUser);
+    ui.setUserName(loginUser);
     ui.setHeight(height);
     try {
       chamberMapper.insertUserInfo(ui);

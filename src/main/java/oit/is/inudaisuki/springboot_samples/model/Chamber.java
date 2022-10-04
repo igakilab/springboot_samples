@@ -2,17 +2,17 @@ package oit.is.inudaisuki.springboot_samples.model;
 
 public class Chamber {
   int id;
-  String user;
+  String userName;
   int number;
 
   // Thymeleafでフィールドを扱うためにはgetter/setterが必ず必要
   // vscodeのソースコード右クリック->ソースアクションでsetter/getterを簡単に追加できる
-  public String getUser() {
-    return user;
+  public String getUserName() {
+    return userName;
   }
 
-  public void setUser(String user) {
-    this.user = user;
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
   public int getNumber() {

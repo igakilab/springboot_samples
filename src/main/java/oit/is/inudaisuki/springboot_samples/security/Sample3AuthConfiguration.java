@@ -1,55 +1,72 @@
 package oit.is.inudaisuki.springboot_samples.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
 @EnableWebSecurity
-public class Sample3AuthConfiguration extends WebSecurityConfigurerAdapter {
+public class Sample3AuthConfiguration {
 
   /**
-   * 認証処理に関する設定（誰がログインできるか）
+   * 認証処理に関する設定（誰がどのようなロールでログインできるか）
+   *
+   * @return
    */
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-    // 平文のパスワードをエンコーダにかけてハッシュ化し，"user1"と関連付けている．ロール名は"USER"
-    // プログラム中に素のパスワードが含まれることになるので望ましくない
-    auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("p@ss")).roles("USER");
-
-    // $ sshrun htpasswd -nbBC 10 admin adm1n
-    // htpasswdでBCryptエンコードを行った後の文字列をパスワードとして指定している．
-    auth.inMemoryAuthentication().withUser("admin")
-        .password("$2y$10$3e7Hs2QZ/p91yJVgP5y/1OC7AC8jfc6YDYDzMGK1XieDlNR2nBGDe").roles("ADMIN");
-  }
-
   @Bean
-  PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  public InMemoryUserDetailsManager userDetailsService() {
+    // このクラスの下部にあるPasswordEncoderを利用して，ユーザのビルダ（ログインするユーザを作成するオブジェクト）を作成する
+    UserBuilder users = User.builder();
+
+    // UserBuilder usersにユーザ名，パスワード，ロールを指定してbuildする
+    // このときパスワードはBCryptでハッシュ化されている．
+    // ハッシュ化されたパスワードを得るには，この授業のbashターミナルで下記のように末尾にユーザ名とパスワードを指定すると良い(要VPN)
+    // $ sshrun htpasswd -nbBC 10 user1 p@ss
+    UserDetails user1 = users
+        .username("user1")
+        .password("$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e")
+        .roles("USER")
+        .build();
+    UserDetails user2 = users
+        .username("user2")
+        .password("$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e")
+        .roles("USER")
+        .build();
+    UserDetails admin = users
+        .username("admin")
+        .password("$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e")
+        .roles("ADMIN")
+        .build();
+    // 生成したユーザをImMemoryUserDetailsManagerに渡す（いくつでも良い）
+    return new InMemoryUserDetailsManager(user1, user2, admin);
   }
 
   /**
    * 認可処理に関する設定（認証されたユーザがどこにアクセスできるか）
+   *
+   * @param http
+   * @return
+   * @throws Exception
    */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    // Spring Securityのフォームを利用してログインを行う
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // Spring Securityのフォームを利用してログインを行う（自前でログインフォームを用意することも可能）
     http.formLogin();
-    // http://localhost:8000/sample3 で始まるURLへのアクセスはログインが必要
-    // antMatchers().authenticated がantMatchersへのアクセスに認証を行うことを示す
-    // antMatchers()の他にanyRequest()と書くとあらゆるアクセス先を表現できる
-    // authenticated()の代わりにpermitAll()と書くと認証処理が不要であることを示す
-    http.authorizeRequests().antMatchers("/sample3/**").authenticated();
-    http.authorizeRequests().antMatchers("/sample4/**").authenticated();
 
-    // Spring Securityの機能を利用してログアウト．ログアウト時は http://localhost:8000/ に戻る
-    http.logout().logoutSuccessUrl("/");
+    // http://localhost:8000/sample3 で始まるURLへのアクセスはログインが必要
+    // mvcMatchers().authenticated()がmvcMatchersに指定されたアクセス先に認証処理が必要であることを示す
+    // authenticated()の代わりにpermitAll()と書くと認証不要となる
+    http.authorizeHttpRequests()
+        .mvcMatchers("/sample3/**").authenticated()
+        .mvcMatchers("/sample4/**").authenticated();
+
+    http.logout().logoutSuccessUrl("/"); // ログアウト時は "http://localhost:8000/" に戻る
 
     /**
      * 以下2行はh2-consoleを利用するための設定なので，開発が完了したらコメントアウトすることが望ましい
@@ -58,5 +75,19 @@ public class Sample3AuthConfiguration extends WebSecurityConfigurerAdapter {
      */
     http.csrf().disable();
     http.headers().frameOptions().disable();
+    return http.build();
+    
   }
+
+  /**
+   *
+   * UserBuilder users = User.builder();で利用するPasswordEncoderを指定する．
+   *
+   * @return BCryptPasswordEncoderを返す
+   */
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
 }
