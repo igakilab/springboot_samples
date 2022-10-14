@@ -89,10 +89,14 @@ public class Sample58Controller {
 
   /**
    * 3秒おきにmap内の全SseEmitterにheartbeatメッセージを送るメソッド
+   * Scheduledアノテーションは引数をもたないメソッドを一定時間ごとに実行する
+   * この例の場合3秒ごと
+   * Scheduled を使うときは @SpringBootApplicationアノテーションの前に@EnableSchedulingをつける
    */
   @Scheduled(fixedRate = 3000)
   public void heartbeat() {
 
+    // this.semap内のすべてのIDとSseEmitterを取得し，heartbeatメッセージを送る
     for (Map.Entry<String, SseEmitter> entry : this.semap.entrySet()) {
       logger.info("heartbeat");
       try {

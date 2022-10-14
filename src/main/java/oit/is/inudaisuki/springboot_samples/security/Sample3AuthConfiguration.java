@@ -28,6 +28,7 @@ public class Sample3AuthConfiguration {
     // このときパスワードはBCryptでハッシュ化されている．
     // ハッシュ化されたパスワードを得るには，この授業のbashターミナルで下記のように末尾にユーザ名とパスワードを指定すると良い(要VPN)
     // $ sshrun htpasswd -nbBC 10 user1 p@ss
+    // ロールを複数追加することもできる
     UserDetails user1 = users
         .username("user1")
         .password("$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e")

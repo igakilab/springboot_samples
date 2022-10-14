@@ -37,10 +37,9 @@ public class Sample56Controller {
     // infoレベルでログを出力する
     logger.info("pushCount");
 
-    // push処理の秘密兵器．これを利用してブラウザにpushする
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
     final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
-    // 引数にLongの最大値をTimeoutとして指定しておく
+    // 引数にLongの最大値をTimeoutとして指定する
 
     try {
       this.ac56.count(emitter);
