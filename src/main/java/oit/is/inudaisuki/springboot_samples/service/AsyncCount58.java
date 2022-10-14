@@ -1,6 +1,7 @@
 package oit.is.inudaisuki.springboot_samples.service;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class AsyncCount58 {
         emitter.send(SseEmitter.event()
             .data(counter)
             .id(role));
-        Thread.sleep(1000);
+        TimeUnit.SECONDS.sleep(1);
       }
     } catch (InterruptedException e) {
       e.printStackTrace();
