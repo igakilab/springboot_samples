@@ -1,5 +1,6 @@
 package oit.is.inudaisuki.springboot_samples.service;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -16,23 +17,21 @@ public class AsyncCountFruit56 {
   private final Logger logger = LoggerFactory.getLogger(AsyncCountFruit56.class);
 
   @Async
-  public void count(SseEmitter emitter) {
+  public void count(SseEmitter emitter) throws IOException {
     logger.info("count start");
-    while (true) {// 無限ループ
-      try {
+    try {
+      while (true) {// 無限ループ
         logger.info("send:" + count);
-        TimeUnit.SECONDS.sleep(1);// 1秒STOP
-        emitter.send(count);// ここでsendすると引数をブラウザにpushする
+        // sendによってcountがブラウザにpushされる
+        emitter.send(count);
         count++;
-      } catch (Exception e) {
-        // 例外の名前とメッセージだけ表示する
-        logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
-        // 例外が発生したらカウントとsendを終了する
-        emitter.complete();// emitterの後始末．明示的にブラウザとの接続を一度切る．
-        break;
+        // 1秒STOP
+        TimeUnit.SECONDS.sleep(1);
       }
+    } catch (InterruptedException e) {
+      // 例外の名前とメッセージだけ表示する
+      logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
     }
-
   }
 
   @Async
@@ -46,7 +45,9 @@ public class AsyncCountFruit56 {
       try {
         logger.info("send(fruit)");
         TimeUnit.SECONDS.sleep(1);// 1秒STOP
-        emitter.send(fruit);// fruitのJSONオブジェクトがクライアントに送付される
+        // fruitのJSONオブジェクトがクライアントに送付される
+        emitter.send(fruit);
+
       } catch (Exception e) {
         // 例外の名前とメッセージだけ表示する
         logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
