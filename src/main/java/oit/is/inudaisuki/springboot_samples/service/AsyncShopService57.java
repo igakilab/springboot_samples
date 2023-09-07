@@ -23,10 +23,6 @@ public class AsyncShopService57 {
   @Autowired
   FruitMapper fMapper;
 
-  public ArrayList<Fruit> syncShowFruitsList() {
-    return fMapper.selectAllFruit();
-  }
-
   /**
    * 購入対象の果物IDの果物をDBから削除し，購入対象の果物オブジェクトを返す
    *
@@ -45,6 +41,10 @@ public class AsyncShopService57 {
     this.dbUpdated = true;
 
     return fruit;
+  }
+
+  public ArrayList<Fruit> syncShowFruitsList() {
+    return fMapper.selectAllFruit();
   }
 
   /**

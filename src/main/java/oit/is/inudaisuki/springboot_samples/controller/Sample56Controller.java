@@ -1,5 +1,7 @@
 package oit.is.inudaisuki.springboot_samples.controller;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +37,24 @@ public class Sample56Controller {
     // infoレベルでログを出力する
     logger.info("pushCount");
 
-    // push処理の秘密兵器．これを利用してブラウザにpushする
     // finalは初期化したあとに再代入が行われない変数につける（意図しない再代入を防ぐ）
-    final SseEmitter sseEmitter = new SseEmitter();
-    this.ac56.count(sseEmitter);
-    return sseEmitter;
+    final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);//
+    // 引数にLongの最大値をTimeoutとして指定する
+
+    try {
+      this.ac56.count(emitter);
+    } catch (IOException e) {
+      // 例外の名前とメッセージだけ表示する
+      logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
+      emitter.complete();
+    }
+    return emitter;
   }
 
   @GetMapping("step2")
   public SseEmitter pushFruit() {
+    // infoレベルでログを出力する
+    logger.info("pushFruit");
     final SseEmitter sseEmitter = new SseEmitter();
     this.ac56.pushFruit(sseEmitter);
     return sseEmitter;
