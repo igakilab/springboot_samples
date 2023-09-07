@@ -1,6 +1,6 @@
 # Springbootsamples
 - Springbootを利用したWebアプリケーションの各種サンプル実装を行うサイト．
-- 対象のSpringbootのver.はv2.7.1
+- 対象のSpringbootのver.はv3.1.3
 
 
 ## 環境構築
@@ -11,10 +11,10 @@
 ## セットアップ（0からやる場合）
 ### Spring Initializrを利用したセットアップ
 - 作成したいアプリの名前でフォルダを作成し，そのフォルダをvscodeで開く
-- 表示->コマンドパレット，を選択し，Spring Initializr:Generate a Gradle Project を実行する
+- 表示->コマンドパレット，を選択し，Spring Initializr:Create a Gradle Project を実行する
 - Spring Initializr: Create a Gradle Project...
 - Spring Boot version.
-  - 2.7.1
+  - 3.1.3
   - ただし，この数値はすぐ変わるので，そのときそのときの最新の安定版(M3やSNAPSHOTと書いていないもの)を選択すること
 - Specify project language: Java
 - Input Group Id for your project: oit.is.inudaisuki
@@ -27,12 +27,13 @@
 - packaging type
   - JAR
   Java version
-  - 11
+  - 17
 - dependencies
   - Spring Web, Thymeleaf, H2 Database, MyBatis Framework, Spring Securityの5つ
 - [Generate into this folder]
-  - springboot_samplesなどのフォルダがある場所と同じisdev21にjankenフォルダが作成されるようにすること
+  - springboot_samplesなどのフォルダがある場所と同じisdev23にspringboot_samplesフォルダが作成されるようにすること
   - 作成後「Successfully generated. Location:..」と表示されるが，[Open][Add to Workspace]の **<span style="color:red">どちらも選択せずに×を選ぶこと</span>**
+  - A build file was modified. Do you want to synchronize the Java classpath/configuration? は Yesで良い気がする
 - .gitignore作成
 - build.gradleを修正
   - tomcatでなくjettyを利用する設定を行う
@@ -69,8 +70,16 @@ server.port=8000
   - vscode内のターミナルではなく，別のターミナルで実行したときに，Ctr+Cが効かない場合がある．その場合は別のターミナルを開き，build.gradleがあるフォルダで`gradle --stop` と実行すると良い．
 
 ## predevはここまで
+### Jetty関連で3系対応
+- class not foundとなって実行されないので，下記をgradle.buildに追加する
+  - 参考：https://stackoverflow.com/questions/74949611/noclassdeffounderror-jakarta-servlet-http-httpsessioncontext-after-upgrade-to-sp
+```gradle
+ext {
+    set("jakarta-servlet.version", '5.0.0')
+}
+```
 
-### SpringbootSamplesApplication.javaの修正
+### SpringbootSamplesApplication.javaの修正（2023時点で下記の設定は不要）
 - `@SpringBootApplication`を以下のように修正し，SecurityAutoConfigurationをimportする
   - Security機能を無効にする設定．build.gradleでsecurityをコメントアウトするとbootrun時にClassNotFoundと出てエラーになる
 
