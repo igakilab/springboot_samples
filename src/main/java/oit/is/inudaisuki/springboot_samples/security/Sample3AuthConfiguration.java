@@ -23,14 +23,13 @@ public class Sample3AuthConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.formLogin(login -> login
-        .permitAll())
+            .permitAll())
         .logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessUrl("/")) // ログアウト後に / にリダイレクト
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/*").permitAll() // すべてのユーザにアクセスを許可
-            .requestMatchers("/sample3/**").authenticated() //
-            .anyRequest().authenticated()); // 上記以外のページは認証が必要
+            .requestMatchers("/sample3/**").authenticated() // /sample3/以下は認証済みであること
+            .requestMatchers("/**").permitAll()); // それ以外は全員アクセス可能
     return http.build();
   }
 
