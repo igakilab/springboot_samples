@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,13 +24,13 @@ public class Sample3AuthConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.formLogin(login -> login
-            .permitAll())
+        .permitAll())
         .logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessUrl("/")) // ログアウト後に / にリダイレクト
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/sample3/**").authenticated() // /sample3/以下は認証済みであること
-            .requestMatchers("/**").permitAll()); // それ以外は全員アクセス可能
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/sample3/**")).authenticated() // /sample3/以下は認証済みであること
+            .requestMatchers(AntPathRequestMatcher.antMatcher("/**")).permitAll()); // それ以外は全員アクセス可能
     return http.build();
   }
 
