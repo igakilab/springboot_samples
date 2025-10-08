@@ -35,7 +35,7 @@ public interface ChamberMapper {
    *
    * @return
    */
-  @Select("SELECT chamber.userName,chamber.chamberName,userinfo.age,userinfo.height, from chamber JOIN userinfo ON chamber.userName=userinfo.userName;")
+  @Select("SELECT chamber.userName,chamber.chamberName,userinfo.age,userinfo.height from chamber JOIN userinfo ON chamber.userName=userinfo.userName;")
   ArrayList<ChamberUser> selectAllChamberUser();
 
   @Insert("INSERT INTO userinfo (userName,age,height) VALUES (#{userName},#{age},#{height});")
