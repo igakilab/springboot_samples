@@ -30,7 +30,7 @@ public class Sample3AuthConfiguration {
             .requestMatchers("/sample3/**").authenticated() // /sample3/以下は認証済みであること
             .requestMatchers("/sample4/**").authenticated() // /sample4/以下は認証済みであること
             .requestMatchers("/sample5/**").authenticated() // /sample5/以下は認証済みであること
-            .requestMatchers("/sample58*").authenticated() // /sample58*は認証済みであること
+            .requestMatchers("/sample58.html", "/sample58/**").authenticated() // sample58の画面とAPIは認証済みであること
             .anyRequest().permitAll()) // 上記以外は全員アクセス可能
         .csrf(csrf -> csrf
             .ignoringRequestMatchers("/h2-console/*", "/sample2*/**")) // sample2用にCSRF対策を無効化

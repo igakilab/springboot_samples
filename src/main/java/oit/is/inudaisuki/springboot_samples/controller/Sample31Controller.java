@@ -2,7 +2,6 @@ package oit.is.inudaisuki.springboot_samples.controller;
 
 import java.security.Principal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,17 @@ import oit.is.inudaisuki.springboot_samples.model.Room;
 @RequestMapping("/sample3")
 public class Sample31Controller {
 
-  @Autowired
-  private Room room;
+  private final Room room;
+
+  /**
+   * コンストラクタで必要な部品を受け取る。finalにできるため、生成後に別のRoomへ
+   * 入れ替わってしまうことを防げる。
+   *
+   * @param room アプリケーションで共有するRoom
+   */
+  public Sample31Controller(Room room) {
+    this.room = room;
+  }
 
   @GetMapping("step1")
   public String sample31() {

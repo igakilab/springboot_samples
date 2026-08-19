@@ -1,12 +1,7 @@
 package oit.is.inudaisuki.springboot_samples.controller;
 
-import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +14,8 @@ import oit.is.inudaisuki.springboot_samples.service.AsyncCount58;
 /**
  * /sample58へのリクエストを扱うクラス
  * Controllerはhtmlを返すコントローラ
- * RestControllerはhtmlではなくjsonを直接返すコントローラ．今回はSseEmitterをjsonで返すメソッドしかないためRestControllerとしている
+ * RestControllerはHTML画面名ではなく、HTTPレスポンス本体を直接返すコントローラ。
+ * この例ではSseEmitterを返し、ブラウザへイベントを継続して送る。
  */
 @RestController
 @RequestMapping("/sample58")
@@ -29,15 +25,11 @@ public class Sample58Controller {
   // 似たようなロガークラスが大量にあるので import org.slf4j.Logger; を間違えないようにすること
   private final Logger logger = LoggerFactory.getLogger(Sample58Controller.class);
 
-  @Autowired
-  private AsyncCount58 counter58;
+  private final AsyncCount58 counter58;
 
-  // SseEmitterがnewされるたびにカウントアップする数値
-  int emitterCounter = 0;
-
-  // 各ロールのemitterを都度newしてmapに保存していって，定期的に異なったメッセージをscheduledで周知できないか
-  // 都度newしないと過去の通信が上書きされてしまう
-  ConcurrentHashMap<String, SseEmitter> semap = new ConcurrentHashMap<String, SseEmitter>();
+  public Sample58Controller(AsyncCount58 counter58) {
+    this.counter58 = counter58;
+  }
 
   /**
    * @AuthenticationPrincipal ログインユーザの名前やロールを取得するためのアノテーション．Principalと違い，ロールも取得できる．
@@ -49,38 +41,19 @@ public class Sample58Controller {
     // infoレベルでログを出力する
     logger.info("pushCount");
     logger.info(user.getUsername());
-    // ロールをStringでまとめて取得する
-    logger.info(user.getAuthorities().toString() + ":toString");
-
-    // ロールを1つずつ取得する場合はこちら
-    for (GrantedAuthority g : user.getAuthorities()) {
-      logger.info(g.getAuthority());
-    }
     // SseEmitterの生成
     SseEmitter emitter = new SseEmitter(60000L); // タイムアウト時間を60秒に設定
-    this.emitterCounter++;// newされたemitterの数
-    String role = new String();
 
-    // ロール名の一覧に含まれている文字列からロールを判定し，roleに代入
-    if (user.getAuthorities().toString().contains("CUSTOMER")) {
-      logger.info("CUSTOMER!!");
-      role = "CUSTOMER";
-    } else if (user.getAuthorities().toString().contains("SELLER")) {
-      logger.info("SELLER!!");
-      role = "SELLER";
-    }
+    // "contains"による文字列検索ではなく、権限名そのものを比較する。
+    String role = user.getAuthorities().stream()
+        .map(authority -> authority.getAuthority())
+        .filter(authority -> authority.equals("ROLE_CUSTOMER") || authority.equals("ROLE_SELLER"))
+        .map(authority -> authority.substring("ROLE_".length()))
+        .findFirst()
+        // CUSTOMER、SELLER以外のログイン済みユーザにも、サンプルとして0を送る。
+        .orElse("OTHER");
 
-    // mapにemitterCounterを文字列にしたものとemitterを保存する
-    String semapId = "" + this.emitterCounter;
-    this.semap.put(semapId, emitter);
-    try {
-      this.counter58.count(emitter, role);
-    } catch (IOException e) {
-      // 例外の名前とメッセージを表示し，mapから対象のemitterを削除する
-      logger.warn("Exception:" + e.getClass().getName() + ":" + e.getMessage());
-      logger.info("emitter is removed");
-      this.semap.remove(semapId);
-    }
+    this.counter58.startCount(emitter, role);
     return emitter;
 
   }
