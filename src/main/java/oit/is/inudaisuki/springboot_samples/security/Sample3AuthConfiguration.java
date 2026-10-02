@@ -30,7 +30,10 @@ public class Sample3AuthConfiguration {
             .requestMatchers("/sample3/**").authenticated() // /sample3/以下は認証済みであること
             .anyRequest().permitAll()) // 上記以外は全員アクセス可能
         .csrf(csrf -> csrf
-            .ignoringRequestMatchers("/sample2*/**")); // sample2用にCSRF対策を無効化
+            .ignoringRequestMatchers("/sample2*/**")) // sample2用にCSRF対策を無効化
+        .headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions
+                .sameOrigin()));
     return http.build();
   }
 
@@ -45,10 +48,9 @@ public class Sample3AuthConfiguration {
     // ユーザ名，パスワード，ロールを指定してbuildする
     // このときパスワードはBCryptでハッシュ化されているため，{bcrypt}とつける
     // ハッシュ化せずに平文でパスワードを指定する場合は{noop}をつける
-    // user1/p@ss,user2/p@ss,admin/p@ss
 
     UserDetails user1 = User.withUsername("user1")
-        .password("{bcrypt}$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e").roles("USER").build();
+        .password("{bcrypt}$2y$05$VA0TwC44qL5fgjxZgJvZMeG6CPq5BzyXetglYZNm.6qiCCYbfemQq").roles("USER").build();
     UserDetails user2 = User.withUsername("user2")
         .password("{bcrypt}$2y$10$ngxCDmuVK1TaGchiYQfJ1OAKkd64IH6skGsNw1sLabrTICOHPxC0e").roles("USER").build();
     UserDetails admin = User.withUsername("admin")
